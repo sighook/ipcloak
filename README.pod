@@ -1,6 +1,6 @@
 =head1 NAME
 
-ipcloak - cloak IPv4 addresses in alternate forms
+ipcloak - render IPv4 addresses in alternate numeric forms
 
 =head1 SYNOPSIS
 
@@ -21,15 +21,19 @@ B<ipcloak> is intended for security researchers performing:
 =over 2
 
 =item *
+
 Input validation and normalization testing
 
 =item *
+
 Filter and WAF evasion research
 
 =item *
+
 Parser behavior analysis
 
 =item *
+
 Educational demonstrations of protocol ambiguity
 
 =back
@@ -43,78 +47,118 @@ network activity.
 
 =item B<prefix>
 
-Optional string printed before each cloaked output.
+Optional string printed before each generated representation.
 
 =item B<postfix>
 
-Optional string printed after each cloaked output.
+Optional string printed after each generated representation.
 
 =back
 
-=head1 FORMATS
+=head1 GENERATED FORMATS
 
-Implemented forms:
+The following encoding classes are currently implemented.
+
+=head2 Whole-address integer encodings
+
+The IPv4 address rendered as a single 32-bit value:
 
 =over 2
 
-=item * Decimal integer
+=item *
 
-Whole 32-bit address as a single decimal number.
+Decimal integer
 
-Example: 2130706433
+  Example: 2130706433
 
-=item * Hex integer
+=item *
 
-Whole 32-bit address as a single hexadecimal number.
+Hexadecimal integer
 
-Example: 0x7F000001
+  Example: 0x7F000001
 
-=item * Octal integer
+=item *
 
-Whole 32-bit address as a single octal number.
+Octal integer
 
-Example: 017700000001
-
-=item * Per-octet hex/octal
-
-Each octet rendered individually in hex or octal.
-
-Example: 0x7F.0x00.0x00.0x01, 0177.0000.0000.0001
-
-=item * Padded hybrids
-
-Octets padded with leading zeros in hex or octal.
-
-Example: 0x000000007F.0x0000000000.0x0000000000.0x0000000001
-
-=item * Collapsed hybrids
-
-Last two or three octets collapsed into a single integer (u16/u24).
-
-Example: 0x7F.0x00.256, 0x7F.65536
-
-=item * Mixed hybrids
-
-Combinations of hex, octal, and decimal across octets.
-
-Example: 0x7F.0x00.1, 0177.0.0.1
+  Example: 017700000001
 
 =back
 
+=head2 Per-octet encodings
+
+Each octet rendered independently:
+
+=over 2
+
+=item *
+
+Hexadecimal octets
+
+  Example: 0x7F.0x00.0x00.0x01
+
+=item *
+
+Octal octets
+
+  Example: 0177.0000.0000.0001
+
+=item *
+
+Fixed-width padded variants
+
+  Example:
+  0x000000007F.0x0000000000.0x0000000000.0x0000000001
+
+=back
+
+=head2 Mixed-base encodings
+
+Combinations of hexadecimal, octal, and decimal components within a
+single address.
+
+  Examples:
+  0x7F.0x00.1
+  0177.0.0.1
+
+These rely on parsers performing base detection per component.
+
+=head2 Collapsed encodings
+
+Adjacent octets collapsed into larger integer values:
+
+=over 2
+
+=item *
+
+u16 - last two octets combined
+
+  Example: 0x7F.0x00.256
+
+=item *
+
+u24 - last three octets combined
+
+  Example: 0x7F.65536
+
+=back
+
+These reflect legacy parsing rules where fewer than four components
+are provided.
+
 =head1 FUTURE CLOAKS
 
-Beyond the current forms, additional cloaks can be added to
-improve bypassing and filter evasion.
-These are not yet implemented, but documented here for roadmap
-clarity:
+The following cloaks are not currently implemented.
+They are documented to provide researchers with awareness of
+additional IPv4 parsing quirks and bypass vectors.
 
 =over 2
 
 =item * IPv6-mapped IPv4
 
-Represent IPv4 inside IPv6 notation.
+IPv4 represented inside IPv6 notation:
 
-Example: ::ffff:127.0.0.1
+  Example: ::ffff:127.0.0.1
 
 Many stacks normalize IPv6-mapped addresses back to IPv4, bypassing
 filters that only check dotted-quad notation.
@@ -123,7 +167,7 @@ filters that only check dotted-quad notation.
 
 Accept both lowercase and uppercase hex prefixes.
 
-Example: 0X7F000001
+  Example: 0X7F000001
 
 Case-insensitive parsers accept both, but regex filters often only
 match lowercase "0x".
@@ -132,7 +176,7 @@ match lowercase "0x".
 
 Break the 32-bit integer into two or more hex parts.
 
-Example: 0x7F.0x00000001
+  Example: 0x7F.0x00000001
 
 Some parsers treat split integers as valid, confusing filters
 expecting a single token.
@@ -141,7 +185,7 @@ expecting a single token.
 
 Addresses with trailing or leading spaces.
 
-Example: "127.0.0.1 "
+  Example: "127.0.0.1 "
 
 Lenient parsers trim whitespace, but filters may fail to normalize,
 allowing bypass.
@@ -150,16 +194,16 @@ allowing bypass.
 
 Addresses with inline comments.
 
-Example: 127.0.0.1/*foo*/
+  Example: 127.0.0.1/*foo*/
 
-Regex-based filters often ignore comments, while parsers still resolve
-the address.
+Regex-based or lexical filters may ignore comments while parsers still
+resolve the address.
 
 =item * XOR-encoded cloaks
 
 Obfuscate the dword with a key, then print the encoded integer.
 
-Example (XOR key 0xFF): 2147483646
+  Example (XOR key 0xFF): 2147483646
 
 Used in shellcode obfuscation to reduce entropy and evade
 signature-based detection.
@@ -168,7 +212,7 @@ signature-based detection.
 
 Represent the IP as a sequence of smaller IPs or integers.
 
-Example: [127.0.0.1, 0.0.0.0]
+  Example: [127.0.0.1, 0.0.0.0]
 
 Payload formed as multiple IPs can slip past filters expecting a
 single canonical address.
@@ -177,7 +221,7 @@ single canonical address.
 
 Compressed IPv6 notation that still resolves to IPv4.
 
-Example: ::7f00:1
+  Example: ::7f00:1
 
 IPv6 compression rules allow multiple equivalent encodings, confusing
 simplistic validators.
@@ -186,7 +230,7 @@ simplistic validators.
 
 Addresses padded with excessive leading zeros.
 
-Example: 0x0000000000000000007F000001
+  Example: 0x0000000000000000007F000001
 
 Parsers accept padded hex, but filters may not normalize, enabling
 bypass.
@@ -196,7 +240,7 @@ bypass.
 =head1 EXTENDING
 
 To add new cloaks, define a subroutine that returns a string
-representation of the IP, then register it in @formats.
+representation of the IP, then register it in B<@formats>.
 
 =head1 COLLAPSED FORMS
 
