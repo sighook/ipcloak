@@ -203,10 +203,23 @@ Add markers around each output:
 
 L<inet_aton(3)>, L<inet_pton(3)>, RFC 791.
 
-=head1 BUGS
+=head1 LIMITATIONS
+
+=over 2
+
+=item *
 
 Only IPv4 addresses are supported.
-IPv6 cloaking is not implemented.
+
+=item *
+
+Acceptance of generated forms depends entirely on the target parser.
+
+=item *
+
+Modern, strict implementations may reject most non-canonical encodings.
+
+=back
 
 =head1 HISTORY
 
