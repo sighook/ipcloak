@@ -191,8 +191,13 @@ These match the original C program's "collapsed hybrid" outputs.
 
 =head1 EXAMPLES
 
+Render all cloaked forms of an address:
+
   ipcloak 127.0.0.1
-  ipcloak 192.168.100.1 "[" "]"
+
+Add markers around each output:
+
+  ipcloak 192.168.100.1 "http://" "/endpoint"
 
 =head1 SEE ALSO
 
