@@ -206,35 +206,34 @@ IPv6 cloaking is not implemented.
 =head1 HISTORY
 
 Derived from IPObfuscator by Osanda Malith Jayathissa.
-Original repository: L<https://github.com/OsandaMalith/IPObfuscator>
+
+Original repository:
+L<https://github.com/OsandaMalith/IPObfuscator>
 
 =head1 AUTHOR
 
-C implementation by Osanda Malith and 1lastBr3ath.
-Perl refactor by Alexandr Savca.
+Original C implementation by Osanda Malith and 1lastBr3ath.
 
-=head1 COPYRIGHT AND LICENSE
+Perl refactor and documentation by Alexandr Savca.
 
-This work is based on IPObfuscator by Osanda Malith Jayathissa
-(http://osandamalith.wordpress.com).
+=head1 LICENSE
 
-Licensed under the Creative Commons Attribution-NonCommercial-ShareAlike
+This work is based on IPObfuscator by Osanda Malith Jayathissa and is
+licensed under the Creative Commons Attribution-NonCommercial-ShareAlike
 4.0 International License (CC BY-NC-SA 4.0).
-See: L<http://creativecommons.org/licenses/by-nc-sa/4.0/>
 
-ipcloak is distributed under the same license.
-You may share and adapt under the following conditions:
+You may share and adapt this work under the following conditions:
 
-=over
+=over 2
 
-=item - Provide attribution to the original author(s).
+=item * Attribution to the original author(s)
 
-=item - NonCommercial use only.
+=item * Non-commercial use only
 
-=item - ShareAlike: distribute adaptations under the same license.
+=item * ShareAlike: derivative works must use the same license
 
 =back
 
+See: L<http://creativecommons.org/licenses/by-nc-sa/4.0/>
 
 =cut
-
