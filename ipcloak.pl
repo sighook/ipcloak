@@ -279,7 +279,7 @@ These match the original C program's "collapsed hybrid" outputs.
 
 =head1 SEE ALSO
 
-inet_aton(3), inet_pton(3), RFC 791.
+L<inet_aton(3)>, L<inet_pton(3)>, RFC 791.
 
 =head1 BUGS
 
